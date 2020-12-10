@@ -13,7 +13,12 @@ const User = mongoose.model('User', {
     },
     age: {
         type: Number,
-        required: true
+        required: true,
+        validate(value) {
+            if (value < 1) {
+                throw new Error('Age must be at least one!');
+            }
+        }
     },
 });
 
@@ -29,8 +34,8 @@ const Task = mongoose.model('Task', {
 });
 
 const user = new User({
-   name: 'Marina',
-   age: 28,
+   name: 'Taras',
+   age: 29,
 });
 
 const task = new Task({
@@ -38,8 +43,8 @@ const task = new Task({
     completed: false,
 });
 
-task.save().then(() => {
-    console.log(task);
+user.save().then(() => {
+    console.log(user);
 }).catch((error) => {
     console.log('Error!', error);
 });
