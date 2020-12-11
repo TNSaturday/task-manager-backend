@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+// mongod -dbpath="C:\Program Files\mongodb-data"
+
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -29,33 +31,46 @@ const User = mongoose.model('User', {
                 throw new Error('Error is incorrect!');
             }
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 7,
+        trim: true,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error('Password cannot contain "password"!');
+            }
+        }
     }
 });
 
 const Task = mongoose.model('Task', {
     description: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     completed: {
         type: Boolean,
-        required: true
+        required: false,
+        default: false
     },
 });
 
-const user = new User({
-    name: 'Kolya',
-    age: 29,
-    email: 'nnsaturday@mail.ru'
-});
+// const user = new User({
+//     name: 'Roma',
+//     age: 30,
+//     email: 'aloneinbox@mail.ru',
+//     password: 'testtest222'
+// });
 
 const task = new Task({
-    description: 'Buy new keyboard',
-    completed: false,
+    description: 'Buy new keyboard'
 });
 
-user.save().then(() => {
-    console.log(user);
+task.save().then(() => {
+    console.log(task);
 }).catch((error) => {
     console.log('Error!', error);
 });
