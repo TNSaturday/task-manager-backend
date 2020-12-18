@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 require('./db/mongoose');
 const User = require('./models/user');
 const Task = require('./models/task');
@@ -6,6 +7,7 @@ const Task = require('./models/task');
 const app = express();
 const port = process.env.PORT || 4000;
 
+app.use(cors());
 app.use(express.json());
 
 app.post('/users', async(req, res) => {
